@@ -1,12 +1,21 @@
 import { redirect } from 'next/navigation';
 import { getSubjectDetails } from '@/lib/questions';
-import { FadeIn } from '../.././components/animations/FadeIn';
+import { FadeIn } from '../../components/animations/FadeIn';
 import { Button } from '../../../components/ui/button';
 import { Card } from '@/components/ui/card';
 
+
+interface Subject {
+  title: string;
+  description: string;
+  topics: string[];
+  recommendedFor: string;
+  icon: string;
+}
+
 export default function SubjectPage({ params }: { params: { subject: string } }) {
-  const subject = getSubjectDetails(params.subject);
-  
+  const subject = getSubjectDetails(params.subject) as Subject | undefined;
+
   if (!subject) {
     redirect('/');
   }
@@ -25,8 +34,8 @@ export default function SubjectPage({ params }: { params: { subject: string } })
                     <div>
                       <h3 className="font-semibold text-lg">Topics Covered:</h3>
                       <ul className="list-disc list-inside opacity-90">
-                        {subject.topics.map((topic, i:any) => (
-                          <li key={i}>{topic}</li>
+                        {subject.topics.map((topic, index) => (
+                          <li key={index}>{topic}</li>
                         ))}
                       </ul>
                     </div>
@@ -35,17 +44,16 @@ export default function SubjectPage({ params }: { params: { subject: string } })
                       <p className="opacity-90">{subject.recommendedFor}</p>
                     </div>
                   </div>
-                  <Button 
-                    href={`/quiz/${params.subject}/play`} 
+                  <Button
+                    asChild
                     className="w-full md:w-auto px-8 py-3 text-lg"
                     glow
                   >
-                    Start {subject.title} Quiz
+                    <a href={`/quiz/${params.subject}/play`}>Start {subject.title} Quiz</a>
                   </Button>
                 </div>
                 <div className="flex-1 flex justify-center">
                   <div className="relative w-64 h-64">
-                    
                     <div className="absolute inset-0 bg-purple-500/20 rounded-full blur-xl"></div>
                     <div className="relative z-10 w-full h-full flex items-center justify-center">
                       <div className="text-8xl">{subject.icon}</div>
