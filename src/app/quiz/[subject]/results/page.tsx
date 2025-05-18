@@ -171,7 +171,7 @@ export default function ResultsPage({ params }: { params: { subject: string } })
               </div>
             </div>
             
-            {/* Feedback Message */}
+            
             <div className="p-4 rounded-xl bg-white/5 border border-white/10">
               <p className="text-lg">
                 {perfectScore ? 'Incredible work! You\'ve mastered this subject completely!' :
