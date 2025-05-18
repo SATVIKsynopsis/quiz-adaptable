@@ -170,7 +170,7 @@ export function QuizProvider({ children }: { children: ReactNode }) {
         subject,
         setSubject,
         difficulty,
-        setDifficulty: świeży
+        setDifficulty: 
         updateDifficulty,
         score,
         setScore,

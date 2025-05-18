@@ -10,13 +10,13 @@ import { ProgressBar } from '../../../components/quiz/ProgressBar';
 import { DifficultyChangeNotification } from '../../../components/quiz/DifficultyChange';
 import React from 'react';
 
-// Define Question interface
+
 interface Question {
   id: number | string;
   text: string;
   options: string[];
   correctAnswer: string;
-  explanation?: string; // Optional, since it's used in feedback
+  explanation?: string; 
 }
 
 export default function QuizPage({ params }: { params: { subject: string } }) {
@@ -34,7 +34,7 @@ export default function QuizPage({ params }: { params: { subject: string } }) {
     adjustDifficulty,
     showDifficultyChange,
     difficultyChangeMessage,
-    // resetQuiz, // Removed to fix no-unused-vars; uncomment if used later
+    
   } = useQuiz();
 
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -107,15 +107,7 @@ export default function QuizPage({ params }: { params: { subject: string } }) {
     questionStartTime.current = new Date();
   };
 
-  // Example usage of resetQuiz (uncomment if needed)
-  /*
-  const handleResetQuiz = () => {
-    resetQuiz();
-    setQuestions([]);
-    setCurrentQuestion(null);
-    router.push(`/quiz/${subject}`);
-  };
-  */
+  
 
   if (!currentQuestion) {
     return (
