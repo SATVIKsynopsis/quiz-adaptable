@@ -13,8 +13,14 @@ interface Subject {
   icon: string;
 }
 
-export default function SubjectPage({ params }: { params: { subject: string } }) {
-  const subject = getSubjectDetails(params.subject) as Subject | undefined;
+
+interface SubjectPageProps {
+  params: Promise<{ subject: string }>;
+}
+
+export default async function SubjectPage({ params }: SubjectPageProps) {
+  const { subject: subjectParam } = await params; 
+  const subject = getSubjectDetails(subjectParam) as Subject | undefined;
 
   if (!subject) {
     redirect('/');
@@ -49,7 +55,7 @@ export default function SubjectPage({ params }: { params: { subject: string } })
                     className="w-full md:w-auto px-8 py-3 text-lg"
                     glow
                   >
-                    <a href={`/quiz/${params.subject}/play`}>Start {subject.title} Quiz</a>
+                    <a href={`/quiz/${subjectParam}/play`}>Start {subject.title} Quiz</a>
                   </Button>
                 </div>
                 <div className="flex-1 flex justify-center">
