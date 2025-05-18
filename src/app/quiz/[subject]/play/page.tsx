@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
@@ -8,26 +8,18 @@ import { SlideTransition } from '@/components/animations/SlideTransition';
 import { QuestionCard } from '../../../components/quiz/QuestionCard';
 import { ProgressBar } from '../../../components/quiz/ProgressBar';
 import { DifficultyChangeNotification } from '../../../components/quiz/DifficultyChange';
-import type { NextPage } from 'next';
 
-// Define interfaces
 interface Question {
-  id: number | string;
+  id: string;
   text: string;
   options: string[];
   correctAnswer: string;
-  explanation?: string;
-  userAnswer?: string;
-  isCorrect?: boolean;
-  difficulty?: 'beginner' | 'intermediate' | 'advanced' | 'expert';
+  explanation: string;
+  difficulty: 'beginner' | 'intermediate' | 'advanced' | 'expert';
+  subject: string;
 }
 
-// Define props type using NextPage
-type QuizPageProps = {
-  params: { subject: string };
-};
-
-const QuizPage: NextPage<QuizPageProps> = ({ params }) => {
+export default function QuizPage({ params }: { params: { subject: string } }) {
   const router = useRouter();
   const subject = params.subject as 'math' | 'science' | 'history' | 'literature' | 'geography' | 'coding';
   const {
@@ -197,6 +189,4 @@ const QuizPage: NextPage<QuizPageProps> = ({ params }) => {
       )}
     </div>
   );
-};
-
-export default QuizPage;
+}
