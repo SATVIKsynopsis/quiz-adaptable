@@ -8,7 +8,7 @@ import { SlideTransition } from '@/components/animations/SlideTransition';
 import { QuestionCard } from '../../../components/quiz/QuestionCard';
 import { ProgressBar } from '../../../components/quiz/ProgressBar';
 import { DifficultyChangeNotification } from '../../../components/quiz/DifficultyChange';
-import React from 'react';
+import type { NextPage } from 'next';
 
 // Define interfaces
 interface Question {
@@ -22,12 +22,12 @@ interface Question {
   difficulty?: 'beginner' | 'intermediate' | 'advanced' | 'expert';
 }
 
-// Define props type for Client Component
-interface QuizPageProps {
+// Define props type using NextPage
+type QuizPageProps = {
   params: { subject: string };
-}
+};
 
-export default function QuizPage({ params }: QuizPageProps) {
+const QuizPage: NextPage<QuizPageProps> = ({ params }) => {
   const router = useRouter();
   const subject = params.subject as 'math' | 'science' | 'history' | 'literature' | 'geography' | 'coding';
   const {
@@ -197,4 +197,6 @@ export default function QuizPage({ params }: QuizPageProps) {
       )}
     </div>
   );
-}
+};
+
+export default QuizPage;
