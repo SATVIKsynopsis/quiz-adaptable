@@ -17,6 +17,8 @@ interface Question {
   options: string[];
   correctAnswer: string;
   explanation?: string; 
+  userAnswer?: string; 
+  isCorrect?: boolean; 
 }
 
 export default function QuizPage({ params }: { params: { subject: string } }) {
@@ -34,7 +36,6 @@ export default function QuizPage({ params }: { params: { subject: string } }) {
     adjustDifficulty,
     showDifficultyChange,
     difficultyChangeMessage,
-    
   } = useQuiz();
 
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -106,8 +107,6 @@ export default function QuizPage({ params }: { params: { subject: string } }) {
     setShowFeedback(false);
     questionStartTime.current = new Date();
   };
-
-  
 
   if (!currentQuestion) {
     return (
