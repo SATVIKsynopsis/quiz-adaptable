@@ -10,20 +10,26 @@ import { ProgressBar } from '../../../components/quiz/ProgressBar';
 import { DifficultyChangeNotification } from '../../../components/quiz/DifficultyChange';
 import React from 'react';
 
-
+// Define interfaces
 interface Question {
   id: number | string;
   text: string;
   options: string[];
   correctAnswer: string;
-  explanation?: string; 
-  userAnswer?: string; 
-  isCorrect?: boolean; 
+  explanation?: string;
+  userAnswer?: string;
+  isCorrect?: boolean;
+  difficulty?: 'beginner' | 'intermediate' | 'advanced' | 'expert';
 }
 
-export default function QuizPage({ params }: { params: { subject: string } }) {
+// Define props type for Client Component
+interface QuizPageProps {
+  params: { subject: string };
+}
+
+export default function QuizPage({ params }: QuizPageProps) {
   const router = useRouter();
-  const subject = React.use(params).subject as 'math' | 'science' | 'history' | 'literature' | 'geography' | 'coding';
+  const subject = params.subject as 'math' | 'science' | 'history' | 'literature' | 'geography' | 'coding';
   const {
     score,
     setScore,
@@ -49,10 +55,14 @@ export default function QuizPage({ params }: { params: { subject: string } }) {
 
   useEffect(() => {
     const loadedQuestions = getQuestionsBySubject(subject, difficulty);
+    if (loadedQuestions.length === 0) {
+      router.push('/error?message=No questions available');
+      return;
+    }
     setQuestions(loadedQuestions);
     setCurrentQuestion(loadedQuestions[0]);
     questionStartTime.current = new Date();
-  }, [subject, difficulty]);
+  }, [subject, difficulty, router]);
 
   const handleAnswer = (option: string) => {
     if (hasAnswered) return;
