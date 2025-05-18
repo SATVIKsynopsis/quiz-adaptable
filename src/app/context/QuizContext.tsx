@@ -1,10 +1,19 @@
-'use client';
+"use client";
 
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+
 
 type Difficulty = 'beginner' | 'intermediate' | 'advanced' | 'expert';
 type Subject = 'math' | 'science' | 'history' | 'literature' | 'geography' | 'coding';
 type UserAnswer = { isCorrect: boolean; timeTaken: number };
+
+
+interface Question {
+  id: number | string;
+  text: string;
+  options: string[];
+  correctAnswer: string;
+}
 
 type QuizContextType = {
   subject: Subject;
@@ -13,8 +22,8 @@ type QuizContextType = {
   setDifficulty: (difficulty: Difficulty) => void;
   score: number;
   setScore: (score: number) => void;
-  answeredQuestions: any[];
-  setAnsweredQuestions: (questions: any[]) => void;
+  answeredQuestions: Question[];
+  setAnsweredQuestions: (questions: Question[]) => void;
   currentQuestionIndex: number;
   setCurrentQuestionIndex: (index: number) => void;
   userAnswers: UserAnswer[];
@@ -40,14 +49,13 @@ export function QuizProvider({ children }: { children: ReactNode }) {
     return 'beginner';
   });
   const [score, setScore] = useState(0);
-  const [answeredQuestions, setAnsweredQuestions] = useState<any[]>([]);
+  const [answeredQuestions, setAnsweredQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
   const [currentDifficulty, setCurrentDifficulty] = useState<Difficulty>(difficulty);
   const [showDifficultyChange, setShowDifficultyChange] = useState(false);
   const [difficultyChangeMessage, setDifficultyChangeMessage] = useState('');
 
-  
   useEffect(() => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('quizDifficulty', JSON.stringify(difficulty));
@@ -58,6 +66,7 @@ export function QuizProvider({ children }: { children: ReactNode }) {
     setDifficulty(newDifficulty);
     setCurrentDifficulty(newDifficulty);
     if (typeof window !== 'undefined') {
+
       localStorage.setItem('quizDifficulty', JSON.stringify(newDifficulty));
     }
   };
@@ -67,20 +76,28 @@ export function QuizProvider({ children }: { children: ReactNode }) {
   };
 
   const getIncreasedDifficulty = (current: Difficulty): Difficulty => {
-    switch(current) {
-      case 'beginner': return 'intermediate';
-      case 'intermediate': return 'advanced';
-      case 'advanced': return 'expert';
-      default: return current;
+    switch (current) {
+      case 'beginner':
+        return 'intermediate';
+      case 'intermediate':
+        return 'advanced';
+      case 'advanced':
+        return 'expert';
+      default:
+        return current;
     }
   };
 
   const getDecreasedDifficulty = (current: Difficulty): Difficulty => {
-    switch(current) {
-      case 'expert': return 'advanced';
-      case 'advanced': return 'intermediate';
-      case 'intermediate': return 'beginner';
-      default: return current;
+    switch (current) {
+      case 'expert':
+        return 'advanced';
+      case 'advanced':
+        return 'intermediate';
+      case 'intermediate':
+        return 'beginner';
+      default:
+        return current;
     }
   };
 
@@ -89,13 +106,13 @@ export function QuizProvider({ children }: { children: ReactNode }) {
       increase: {
         beginner: `Moving from Beginner to Intermediate`,
         intermediate: `Advancing from Intermediate to Advanced`,
-        advanced: `Progressing to Expert level`
+        advanced: `Progressing to Expert level`,
       },
       decrease: {
         intermediate: `Adjusting down to Beginner`,
         advanced: `Adjusting down to Intermediate`,
-        expert: `Adjusting down to Advanced`
-      }
+        expert: `Adjusting down to Advanced`,
+      },
     };
 
     if (isIncrease) {
@@ -103,7 +120,7 @@ export function QuizProvider({ children }: { children: ReactNode }) {
     } else {
       setDifficultyChangeMessage(messages.decrease[currentDifficulty]);
     }
-    
+
     setShowDifficultyChange(true);
     setTimeout(clearDifficultyChange, 3000);
   };
@@ -116,7 +133,7 @@ export function QuizProvider({ children }: { children: ReactNode }) {
   const adjustDifficulty = (isCorrect: boolean, timeTaken: number) => {
     const newAnswers = [...userAnswers, { isCorrect, timeTaken }];
     setUserAnswers(newAnswers);
-    
+
     if (newAnswers.length % 3 === 0) {
       const lastThree = newAnswers.slice(-3);
       const correctCount = lastThree.filter(a => a.isCorrect).length;
@@ -143,7 +160,7 @@ export function QuizProvider({ children }: { children: ReactNode }) {
     setAnsweredQuestions([]);
     setCurrentQuestionIndex(0);
     setUserAnswers([]);
-    setCurrentDifficulty(difficulty); 
+    setCurrentDifficulty(difficulty);
     clearDifficultyChange();
   };
 
@@ -153,7 +170,8 @@ export function QuizProvider({ children }: { children: ReactNode }) {
         subject,
         setSubject,
         difficulty,
-        setDifficulty: updateDifficulty,
+        setDifficulty: świeży
+        updateDifficulty,
         score,
         setScore,
         answeredQuestions,

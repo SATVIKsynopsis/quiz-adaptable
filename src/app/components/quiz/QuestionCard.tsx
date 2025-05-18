@@ -1,5 +1,15 @@
+"use client";
+
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+
+
+interface Question {
+  id: number | string;
+  text: string;
+  options: string[];
+  correctAnswer: string;
+}
 
 export function QuestionCard({
   question,
@@ -8,7 +18,7 @@ export function QuestionCard({
   showFeedback,
   isCorrect,
 }: {
-  question: any;
+  question: Question;
   selectedOption: string | null;
   onSelect: (option: string) => void;
   showFeedback: boolean;
@@ -17,7 +27,6 @@ export function QuestionCard({
   const [shuffledOptions, setShuffledOptions] = useState<string[]>([]);
 
   useEffect(() => {
-   
     const options = [...question.options];
     for (let i = options.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -30,7 +39,7 @@ export function QuestionCard({
     if (!showFeedback) {
       return option === selectedOption ? 'selected' : 'default';
     }
-    
+
     if (option === question.correctAnswer) return 'correct';
     if (option === selectedOption && !isCorrect) return 'incorrect';
     return 'default';
@@ -44,7 +53,7 @@ export function QuestionCard({
         </span>
         <h2 className="text-2xl font-bold mt-1">{question.text}</h2>
       </div>
-      
+
       <div className="space-y-3">
         {shuffledOptions.map((option, index) => (
           <OptionButton

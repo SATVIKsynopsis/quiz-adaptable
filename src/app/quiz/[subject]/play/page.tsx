@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
@@ -9,6 +9,15 @@ import { QuestionCard } from '../../../components/quiz/QuestionCard';
 import { ProgressBar } from '../../../components/quiz/ProgressBar';
 import { DifficultyChangeNotification } from '../../../components/quiz/DifficultyChange';
 import React from 'react';
+
+// Define Question interface
+interface Question {
+  id: number | string;
+  text: string;
+  options: string[];
+  correctAnswer: string;
+  explanation?: string; // Optional, since it's used in feedback
+}
 
 export default function QuizPage({ params }: { params: { subject: string } }) {
   const router = useRouter();
@@ -23,13 +32,13 @@ export default function QuizPage({ params }: { params: { subject: string } }) {
     currentDifficulty,
     difficulty,
     adjustDifficulty,
-    resetQuiz,
     showDifficultyChange,
     difficultyChangeMessage,
+    // resetQuiz, // Removed to fix no-unused-vars; uncomment if used later
   } = useQuiz();
-  
-  const [questions, setQuestions] = useState<any[]>([]);
-  const [currentQuestion, setCurrentQuestion] = useState<any>(null);
+
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [hasAnswered, setHasAnswered] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
@@ -38,7 +47,6 @@ export default function QuizPage({ params }: { params: { subject: string } }) {
   const questionStartTime = useRef<Date>(new Date());
 
   useEffect(() => {
-   
     const loadedQuestions = getQuestionsBySubject(subject, difficulty);
     setQuestions(loadedQuestions);
     setCurrentQuestion(loadedQuestions[0]);
@@ -47,10 +55,10 @@ export default function QuizPage({ params }: { params: { subject: string } }) {
 
   const handleAnswer = (option: string) => {
     if (hasAnswered) return;
-    
+
     const timeTaken = (new Date().getTime() - questionStartTime.current.getTime()) / 1000;
     const correct = option === currentQuestion?.correctAnswer;
-    
+
     if (currentQuestion) {
       adjustDifficulty(correct, timeTaken);
       setSelectedOption(option);
@@ -68,14 +76,14 @@ export default function QuizPage({ params }: { params: { subject: string } }) {
           ...currentQuestion,
           userAnswer: option,
           isCorrect: correct,
-        }
+        },
       ]);
     }
   };
 
   const handleNextQuestion = () => {
     setIsTransitioning(true);
-    
+
     setTimeout(() => {
       const nextIndex = currentQuestionIndex + 1;
       if (nextIndex < questions.length) {
@@ -99,6 +107,16 @@ export default function QuizPage({ params }: { params: { subject: string } }) {
     questionStartTime.current = new Date();
   };
 
+  // Example usage of resetQuiz (uncomment if needed)
+  /*
+  const handleResetQuiz = () => {
+    resetQuiz();
+    setQuestions([]);
+    setCurrentQuestion(null);
+    router.push(`/quiz/${subject}`);
+  };
+  */
+
   if (!currentQuestion) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-900 to-purple-800">
@@ -110,16 +128,16 @@ export default function QuizPage({ params }: { params: { subject: string } }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 to-purple-800 text-white">
       <div className="container mx-auto px-4 py-8">
-        <ProgressBar 
-          current={currentQuestionIndex + 1} 
-          total={questions.length} 
+        <ProgressBar
+          current={currentQuestionIndex + 1}
+          total={questions.length}
           score={score}
           difficulty={currentDifficulty}
           initialDifficulty={difficulty}
         />
-        
-        <SlideTransition 
-          direction={isTransitioning ? 'out' : 'in'} 
+
+        <SlideTransition
+          direction={isTransitioning ? 'out' : 'in'}
           transitionKey={currentQuestionIndex}
         >
           <div className="max-w-3xl mx-auto mt-12">
@@ -130,9 +148,13 @@ export default function QuizPage({ params }: { params: { subject: string } }) {
               showFeedback={showFeedback}
               isCorrect={isCorrect}
             />
-            
+
             {showFeedback && (
-              <div className={`mt-6 p-4 rounded-xl ${isCorrect ? 'bg-green-500/20' : 'bg-red-500/20'} border ${isCorrect ? 'border-green-400/30' : 'border-red-400/30'}`}>
+              <div
+                className={`mt-6 p-4 rounded-xl ${
+                  isCorrect ? 'bg-green-500/20' : 'bg-red-500/20'
+                } border ${isCorrect ? 'border-green-400/30' : 'border-red-400/30'}`}
+              >
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="font-bold text-lg">
@@ -165,9 +187,11 @@ export default function QuizPage({ params }: { params: { subject: string } }) {
       {showDifficultyChange && (
         <DifficultyChangeNotification
           message={difficultyChangeMessage}
-          isIncreasing={difficultyChangeMessage.includes('Moving') || 
-                       difficultyChangeMessage.includes('Advancing') || 
-                       difficultyChangeMessage.includes('Progressing')}
+          isIncreasing={
+            difficultyChangeMessage.includes('Moving') ||
+            difficultyChangeMessage.includes('Advancing') ||
+            difficultyChangeMessage.includes('Progressing')
+          }
         />
       )}
     </div>

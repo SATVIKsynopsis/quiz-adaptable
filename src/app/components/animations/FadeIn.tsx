@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { motion, Variants } from 'framer-motion';
 import { ReactNode } from 'react';
@@ -10,18 +10,6 @@ interface FadeInProps {
   yOffset?: number;
   className?: string;
 }
-
-const defaultVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { 
-    opacity: 1, 
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.25, 0.1, 0.25, 1]
-    }
-  }
-};
 
 export function FadeIn({ 
   children, 
@@ -54,7 +42,6 @@ export function FadeIn({
     </motion.div>
   );
 }
-
 
 export function FadeInUp({ children, delay = 0 }: { children: ReactNode, delay?: number }) {
   return (
