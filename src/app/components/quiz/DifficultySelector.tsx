@@ -64,7 +64,7 @@ export function DifficultySelector() {
         ))}
       </div>
 
-      {/* Animated difficulty meter */}
+    
       <div className="relative mt-6">
         <div className="h-2 bg-white/10 rounded-full overflow-hidden">
           <motion.div

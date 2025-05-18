@@ -38,7 +38,7 @@ export function BounceIn({
   );
 }
 
-// Pre-configured bounce animations
+
 export function BounceInUp({ children, delay = 0 }: { children: ReactNode, delay?: number }) {
   return (
     <motion.div

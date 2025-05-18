@@ -69,7 +69,7 @@ export function SubjectSelector() {
               </motion.div>
               <h3 className="font-bold text-white text-lg">{subject.name}</h3>
               
-              {/* Ripple effect */}
+           
               <motion.span
                 className="absolute top-0 left-0 w-full h-full bg-white/10 opacity-0"
                 whileHover={{ opacity: 0.2, scale: 1.5 }}
@@ -80,7 +80,7 @@ export function SubjectSelector() {
         </AnimatePresence>
       </div>
 
-      {/* Animated selection indicator */}
+     
       <div className="flex justify-center">
         <motion.div 
           className="h-1 bg-white/20 rounded-full overflow-hidden"

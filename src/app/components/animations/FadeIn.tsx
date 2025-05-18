@@ -55,7 +55,7 @@ export function FadeIn({
   );
 }
 
-// Optional: Export a pre-configured version
+
 export function FadeInUp({ children, delay = 0 }: { children: ReactNode, delay?: number }) {
   return (
     <FadeIn yOffset={20} delay={delay}>

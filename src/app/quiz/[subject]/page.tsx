@@ -25,7 +25,7 @@ export default function SubjectPage({ params }: { params: { subject: string } })
                     <div>
                       <h3 className="font-semibold text-lg">Topics Covered:</h3>
                       <ul className="list-disc list-inside opacity-90">
-                        {subject.topics.map((topic, i) => (
+                        {subject.topics.map((topic, i:any) => (
                           <li key={i}>{topic}</li>
                         ))}
                       </ul>
@@ -45,7 +45,7 @@ export default function SubjectPage({ params }: { params: { subject: string } })
                 </div>
                 <div className="flex-1 flex justify-center">
                   <div className="relative w-64 h-64">
-                    {/* Subject illustration would go here */}
+                    
                     <div className="absolute inset-0 bg-purple-500/20 rounded-full blur-xl"></div>
                     <div className="relative z-10 w-full h-full flex items-center justify-center">
                       <div className="text-8xl">{subject.icon}</div>

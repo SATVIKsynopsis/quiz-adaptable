@@ -5,27 +5,29 @@ import { ReactNode } from 'react';
 
 type SlideDirection = 'left' | 'right' | 'up' | 'down';
 
+interface SlideTransitionProps {
+  children: ReactNode;
+  direction?: SlideDirection;
+  transitionKey?: string | number; // Changed from 'key' to 'transitionKey'
+  duration?: number;
+  delay?: number;
+  className?: string;
+}
+
 export function SlideTransition({
   children,
   direction = 'right',
-  key,
+  transitionKey, // Now using transitionKey instead of key
   duration = 0.5,
   delay = 0,
-}: {
-  children: ReactNode;
-  direction?: SlideDirection;
-  key?: string | number;
-  duration?: number;
-  delay?: number;
-}) {
+  className = '',
+}: SlideTransitionProps) {
   const variants = {
-    enter: (customDirection: SlideDirection) => {
-      return {
-        x: customDirection === 'left' ? 100 : customDirection === 'right' ? -100 : 0,
-        y: customDirection === 'up' ? 100 : customDirection === 'down' ? -100 : 0,
-        opacity: 0,
-      };
-    },
+    enter: (customDirection: SlideDirection) => ({
+      x: customDirection === 'left' ? 100 : customDirection === 'right' ? -100 : 0,
+      y: customDirection === 'up' ? 100 : customDirection === 'down' ? -100 : 0,
+      opacity: 0,
+    }),
     center: {
       x: 0,
       y: 0,
@@ -36,29 +38,27 @@ export function SlideTransition({
         ease: [0.25, 0.1, 0.25, 1],
       },
     },
-    exit: (customDirection: SlideDirection) => {
-      return {
-        x: customDirection === 'left' ? -100 : customDirection === 'right' ? 100 : 0,
-        y: customDirection === 'up' ? -100 : customDirection === 'down' ? 100 : 0,
-        opacity: 0,
-        transition: {
-          duration,
-          ease: [0.25, 0.1, 0.25, 1],
-        },
-      };
-    },
+    exit: (customDirection: SlideDirection) => ({
+      x: customDirection === 'left' ? -100 : customDirection === 'right' ? 100 : 0,
+      y: customDirection === 'up' ? -100 : customDirection === 'down' ? 100 : 0,
+      opacity: 0,
+      transition: {
+        duration,
+        ease: [0.25, 0.1, 0.25, 1],
+      },
+    }),
   };
 
   return (
     <AnimatePresence mode="wait" custom={direction}>
       <motion.div
-        key={key}
+        key={transitionKey} // Using transitionKey here
         custom={direction}
         variants={variants}
         initial="enter"
         animate="center"
         exit="exit"
-        className="w-full h-full"
+        className={className}
       >
         {children}
       </motion.div>
